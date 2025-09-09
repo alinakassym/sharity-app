@@ -1,105 +1,37 @@
-import { FC, useState } from "react";
-import {
-  Pressable,
-  Keyboard,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
-
-import { VStack } from "@/components/ui/vstack";
-import {
-  FormControl,
-  FormControlLabel,
-  FormControlLabelText,
-  FormControlError,
-  FormControlErrorText,
-} from "@/components/ui/form-control";
-import { Input, InputField } from "@/components/ui/input";
-import { Button, ButtonText } from "@/components/ui/button";
+import { ScrollView, View } from "react-native";
 import { Text } from "@/components/ui/text";
 
-const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const TabOneScreen: FC = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  const nameError = name.trim().length < 2 ? "Введите минимум 2 символа" : "";
-  const emailError =
-    email && !emailRe.test(email) ? "Неверный формат email" : "";
-  const isValid = !nameError && !emailError && name.trim() && email.trim();
-
-  const onSubmit = () => {
-    setSubmitted(true);
-    if (!isValid) return;
-    Alert.alert("OK", `Name: ${name}\nEmail: ${email}`);
-    setName("");
-    setEmail("");
-    setSubmitted(false);
-  };
-
+const HomeScreen = () => {
   return (
-    <KeyboardAvoidingView
-      className="flex-1 bg-white"
-      behavior={Platform.select({ ios: "padding", android: undefined })}
-    >
-      <Pressable className="flex-1" onPress={Keyboard.dismiss}>
-        <VStack className="flex-1 px-6 py-8 gap-6">
-          <Text className="text-2xl font-semibold">
-            Demo Form (gluestack-ui)
+    <ScrollView className="flex-1 bg-white">
+      <View className="px-6 py-8">
+        <Text className="text-2xl font-bold mb-6">Главная</Text>
+
+        <View className="bg-gray-50 p-4 rounded-lg mb-4">
+          <Text className="text-lg font-semibold mb-2">Добро пожаловать!</Text>
+          <Text className="text-gray-600">
+            Здесь будет основной контент приложения
           </Text>
+        </View>
 
-          <FormControl isInvalid={!!nameError && submitted}>
-            <FormControlLabel>
-              <FormControlLabelText>Имя</FormControlLabelText>
-            </FormControlLabel>
-            <Input>
-              <InputField
-                value={name}
-                onChangeText={setName}
-                placeholder="Ваше имя"
-                returnKeyType="next"
-              />
-            </Input>
-            {!!nameError && submitted && (
-              <FormControlError>
-                <FormControlErrorText>{nameError}</FormControlErrorText>
-              </FormControlError>
-            )}
-          </FormControl>
+        <View className="bg-blue-50 p-4 rounded-lg mb-4">
+          <Text className="text-lg font-semibold mb-2 text-blue-900">
+            Новости
+          </Text>
+          <Text className="text-blue-800">Актуальные новости и обновления</Text>
+        </View>
 
-          <FormControl isInvalid={!!emailError && submitted}>
-            <FormControlLabel>
-              <FormControlLabelText>Email</FormControlLabelText>
-            </FormControlLabel>
-            <Input>
-              <InputField
-                value={email}
-                onChangeText={setEmail}
-                placeholder="you@example.com"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-                returnKeyType="done"
-                onSubmitEditing={onSubmit}
-              />
-            </Input>
-            {!!emailError && submitted && (
-              <FormControlError>
-                <FormControlErrorText>{emailError}</FormControlErrorText>
-              </FormControlError>
-            )}
-          </FormControl>
-
-          <Button className="mt-2" isDisabled={!isValid} onPress={onSubmit}>
-            <ButtonText>Отправить</ButtonText>
-          </Button>
-        </VStack>
-      </Pressable>
-    </KeyboardAvoidingView>
+        <View className="bg-green-50 p-4 rounded-lg">
+          <Text className="text-lg font-semibold mb-2 text-green-900">
+            Активность
+          </Text>
+          <Text className="text-green-800">
+            Последние активности пользователей
+          </Text>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
-export default TabOneScreen;
+export default HomeScreen;
