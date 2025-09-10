@@ -1,14 +1,15 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
+import Colors from "@/constants/Colors";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import "@/global.css";
 
-import { useColorScheme } from "@/components/useColorScheme";
+import { ThemeProvider as CustomThemeProvider, useTheme } from "@/contexts/ThemeContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -44,14 +45,26 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <CustomThemeProvider>
+      <RootLayoutNav />
+    </CustomThemeProvider>
+  );
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useTheme();
+
+  const customTheme = {
+    ...(colorScheme === "dark" ? DarkTheme : DefaultTheme),
+    colors: {
+      ...(colorScheme === "dark" ? DarkTheme : DefaultTheme).colors,
+      background: Colors[colorScheme ?? "light"].background,
+    },
+  };
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={customTheme}>
       <GluestackUIProvider>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

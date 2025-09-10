@@ -2,15 +2,14 @@ import React from 'react';
 import { Tabs } from "expo-router";
 
 import Colors from "@/constants/Colors";
-import { useColorScheme } from "@/components/useColorScheme";
+import { useTheme } from "@/contexts/ThemeContext";
 import { HomeIcon } from "@/components/icons/HomeIcon";
 import { AddIcon } from "@/components/icons/AddIcon";
 import { UserIcon } from "@/components/icons/UserIcon";
 import { Text } from "@/components/ui/text";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+  const { colorScheme } = useTheme();
   return (
     <Tabs
       screenOptions={{
