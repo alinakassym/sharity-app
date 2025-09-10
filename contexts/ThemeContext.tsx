@@ -1,5 +1,11 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { useColorScheme as useSystemColorScheme } from "react-native";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { Appearance } from "react-native";
 
 type ColorScheme = "light" | "dark";
 type ThemeMode = "system" | "light" | "dark";
@@ -14,12 +20,23 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [themeMode, setThemeMode] = useState<ThemeMode>("system");
-  const systemColorScheme = useSystemColorScheme();
+  const [systemColorScheme, setSystemColorScheme] = useState<ColorScheme>(
+    () => (Appearance.getColorScheme() as ColorScheme) || "system",
+  );
+
+  useEffect(() => {
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      console.log("Appearance changed to:", colorScheme);
+      setSystemColorScheme((colorScheme as ColorScheme) || "light");
+    });
+
+    return () => subscription.remove();
+  }, []);
+
+  console.log("Current system color scheme:", systemColorScheme);
 
   const colorScheme: ColorScheme =
-    themeMode === "system"
-      ? (systemColorScheme ?? "light")
-      : (themeMode as ColorScheme);
+    themeMode === "system" ? systemColorScheme : (themeMode as ColorScheme);
 
   return (
     <ThemeContext.Provider value={{ colorScheme, themeMode, setThemeMode }}>
