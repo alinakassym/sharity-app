@@ -5,7 +5,7 @@ import { banners } from "@/mocks/banners";
 
 const HomeScreen = () => {
   return (
-    <ScrollView className="flex-1 bg-white">
+    <ScrollView className="flex-1">
       <Carousel items={banners} />
       <View className="px-6 py-8">
         <Text className="text-2xl font-bold mb-6">Главная</Text>

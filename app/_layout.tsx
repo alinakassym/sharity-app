@@ -59,7 +59,7 @@ function RootLayoutNav() {
     ...(colorScheme === "dark" ? DarkTheme : DefaultTheme),
     colors: {
       ...(colorScheme === "dark" ? DarkTheme : DefaultTheme).colors,
-      background: Colors[colorScheme ?? "light"].background,
+      background: Colors[colorScheme ?? "light"].surfaceColor,
     },
   };
 
