@@ -1,8 +1,8 @@
 import React from "react";
 import { View, TouchableOpacity, Image } from "react-native";
-import { Text } from "@/components/ui/text";
-import { useTheme } from "@/contexts/ThemeContext";
 import Colors from "@/constants/Colors";
+import { useTheme } from "@/contexts/ThemeContext";
+import { Text } from "@/components/ui/text";
 
 interface MenuButtonProps {
   image: any;
@@ -11,12 +11,26 @@ interface MenuButtonProps {
 }
 
 const MenuButton: React.FC<MenuButtonProps> = ({ image, title, onPress }) => {
+  const { colorScheme } = useTheme();
   return (
-    <TouchableOpacity onPress={onPress} className="flex-1 items-center">
-      <View className="w-20 h-20 rounded-2xl overflow-hidden mb-2">
-        <Image source={image} className="w-full h-full" resizeMode="cover" />
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={onPress}
+      style={{ alignItems: "center", justifyContent: "center", gap: 8 }}
+    >
+      <View
+        style={{
+          width: 70,
+          height: 70,
+          borderRadius: 15,
+        }}
+      >
+        <Image
+          source={image}
+          style={{ width: 70, height: 70, borderRadius: 15 }}
+        />
       </View>
-      <Text className="text-sm font-medium text-center text-white">
+      <Text style={{ color: Colors[colorScheme ?? "light"].text }}>
         {title}
       </Text>
     </TouchableOpacity>
@@ -46,24 +60,25 @@ const MenuButtons: React.FC = () => {
 
   return (
     <View
-      className="mx-6 my-8 p-6 rounded-3xl"
+      className="my-4 p-6"
       style={{
+        flexDirection: "row",
+        justifyContent: "center",
+        gap: 32,
         backgroundColor:
           Colors[colorScheme ?? "light"].background === "#FFFFFF"
             ? "#2C2C54"
             : Colors[colorScheme ?? "light"].background,
       }}
     >
-      <View className="flex-row justify-between items-center">
-        {menuItems.map((item, index) => (
-          <MenuButton
-            key={index}
-            image={item.image}
-            title={item.title}
-            onPress={item.onPress}
-          />
-        ))}
-      </View>
+      {menuItems.map((item, index) => (
+        <MenuButton
+          key={index}
+          image={item.image}
+          title={item.title}
+          onPress={item.onPress}
+        />
+      ))}
     </View>
   );
 };
